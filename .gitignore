@@ -1,0 +1,15 @@
+dist
+pom.xml
+*jar
+/lib/
+/classes/
+/out/
+/release/
+/target/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+.repl*
+
+# Local Netlify folder
+.netlify
