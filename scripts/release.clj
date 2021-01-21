@@ -7,7 +7,7 @@
           :let [[ns-name name] (.split endpoint "/")]]
     (spit
       (str "dist/" name)
-      (-> endpoint (.replace "/" ".") (str "_static")))))
+      (-> endpoint (.replace "/" ".")))))
 
 ;(require '[cljs.build.api :as b])
 

@@ -28,6 +28,3 @@
   [:script (-> "htmx_wrapper.js"
                io/resource
                slurp)])
-
-(do
-  (def ^:export a 1))
