@@ -2,4 +2,8 @@
 cd ../ctmx
 lein install
 cd ../ctmx-static
+
+rm -r dist
+mkdir dist
+cp htmx.min.js dist
 rlwrap lein trampoline run -m clojure.main scripts/release.clj

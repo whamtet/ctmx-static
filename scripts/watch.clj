@@ -1,15 +1,9 @@
+(require '[ctmx.core :as ctmx])
 (use 'ctmx-static.core)
 
 (defn reload []
   (use 'ctmx-static.core :reload)
-  (let [{:keys [text endpoints]} (page true)]
-    (prn 'endpoints endpoints)
-    (spit "index.html" text)
-    (doseq [endpoint endpoints
-            :let [[ns-name name] (.split endpoint "/")]]
-      (spit
-        name
-        (-> endpoint (.replace "/" "."))))))
+  (ctmx/spit-static "./" (routes false)))
 
 (require '[cljs.build.api :as b])
 

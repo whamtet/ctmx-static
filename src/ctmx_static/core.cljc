@@ -21,10 +21,16 @@
    [:meta {:http-equiv "Content-Type" :content "text/html; charset=utf-8"}]]
   [:body {:hx-ext "static"}
    (form nil "hello")]
-  [:script {:src "htmx.min.js"}]
+  [:script {:src "/htmx.min.js"}]
   [:script {:src (if release?
-                   "ctmx_static.js"
-                   "out/ctmx_static.js")}]
+                   "/ctmx_static.js"
+                   "/out/ctmx_static.js")}]
+  [:script "htmx.config.defaultSettleDelay = 0;
+   htmx.config.defaultSwapStyle = 'outerHTML';"]
   [:script (-> "htmx_wrapper.js"
                io/resource
                slurp)])
+
+(defn routes [release?]
+  {"" (page release?)
+   "subroute" (page release?)})
