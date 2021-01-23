@@ -75,24 +75,9 @@
 (defmacro forall [& args]
   `(doall (for ~@args)))
 
-(defn get-syms [body]
-  (->> body
-       flatten
-       (filter symbol?)
-       distinct
-       (mapv #(list 'quote %))))
-
-(defn assoc-syms [body f]
-  `(with-meta ~f {:syms ~(get-syms body)}))
-
 (defmacro defcomponent [name args & body]
   `(def ~name
      ~(->> body
            expand-parser-hints
            (with-stack name args)
-           (make-f name args)
-           (assoc-syms body))))
-
-(defn- mapmerge [f s]
-  (apply merge (map f s)))
-
+           (make-f name args))))

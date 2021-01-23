@@ -9,5 +9,6 @@
   :plugins [[lein-npm "0.6.2"]]
   :npm {:dependencies [[source-map-support "0.4.0"]]}
   :source-paths ["src" "target/classes"]
+  :resource-paths ["resources"]
   :clean-targets [:target-path "out" "release"]
   :target-path "target")
