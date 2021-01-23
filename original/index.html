@@ -19,7 +19,7 @@
     <div class="c">
         <div class="menu">
             <div class="logo-wrapper">
-                <span hx-get="/" hx-target="body" hx-push-url="true" class="logo light">&lt;<a>/</a>&gt; htm<a>x</a></span>
+                <span hx-get="/" hx-target="body" hx-push-url="true" class="logo light"><a>c</a>tmx</span>
                 <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
                     <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
                     <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
@@ -30,25 +30,10 @@
             <div id="nav" class="navigation" hx-boost="true">
 
                 <div class="navigation-items" preload="mouseover">
-                    <div>
-                        <a href="https://htmx.org/docs/">docs</a>
-                    </div>
-                    <div>
-                        <a href="https://htmx.org/reference/">reference</a>
-                    </div>
-                    <div>
-                        <a href="https://htmx.org/examples/">examples</a>
-                    </div>
-                    <div>
-                        <a href="https://htmx.org/talk/">talk</a>
-                    </div>
-                    <div>
-                        <a href="https://github.com/sponsors/bigskysoftware?o=esb">sponsor</a>
-                    </div>
                 </div>
                 <div class="github-stars">
-                    <a href="https://github.com/bigskysoftware/htmx">github</a>
-                    <iframe style="margin:auto;" src="./___ htmx - high power tools for html_files/github-btn.html" frameborder="0" scrolling="0" width="150" height="20" title="Star htmx on GitHub"></iframe>
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
                 </div>
             </div>
         </div>
@@ -58,28 +43,18 @@
 
 <div class="c content">
     <div class="dark-hero full-width appear" classes="add appear">
-  <span class="logo dark">&lt;<a>/</a>&gt; <span class="no-mobile">htm<a>x</a></span></span>
-  <sub class="no-mobile"><i>high power tools for HTML</i></sub>
+  <span class="logo dark"><span class="no-mobile"><a>c</a>tmx</span></span>
+  <sub class="no-mobile"><i>backend for HTMX</i></sub>
 </div>
-<h2>introduction</h2>
-<p>htmx allows you to access  <a href="https://htmx.org/docs#ajax">AJAX</a>, <a href="https://htmx.org/docs#css_transitions">CSS Transitions</a>,  <a href="https://htmx.org/docs#websockets">WebSockets</a> and <a href="https://htmx.org/docs#sse">Server Sent Events</a>
-directly in HTML, using <a href="https://htmx.org/reference#attributes">attributes</a>, so you can build
-<a href="https://htmx.org/examples">modern user interfaces</a> with the <a href="https://en.wikipedia.org/wiki/HATEOAS">simplicity</a> and
-<a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">power</a> of hypertext</p>
-<p>htmx is small (<a href="https://unpkg.com/htmx.org/dist/">~9k min.gz'd</a>),
-<a href="https://github.com/bigskysoftware/htmx/blob/master/package.json">dependency-free</a>,
-<a href="https://htmx.org/extensions">extendable</a> &amp;
-IE11 compatible</p>
-<h2>motivation</h2>
-<ul>
-<li>Why should only <code>&lt;a&gt;</code> and <code>&lt;form&gt;</code> be able to make HTTP requests?</li>
-<li>Why should only <code>click</code> &amp; <code>submit</code> events trigger them?</li>
-<li>Why should only GET &amp; POST be available?</li>
-<li>Why should you only be able to replace the <em>entire</em> screen?</li>
-</ul>
-<p>By removing these arbitrary constraints htmx completes HTML as a
-<a href="https://en.wikipedia.org/wiki/Hypertext">hypertext</a></p>
-<h2>quick start</h2>
+<h2>about</h2>
+  <p>
+    ctmx is a backend compliment to <a href="https://htmx.org">htmx</a>.
+  </p>
+  <p>
+    It provides a unified, react like format for rendering components on the backend that feels like frontend code
+    but without the restrictions and load times of javascript.
+  </p>
+<h2>demo</h2>
 <pre class="  language-html"><code class="  language-html">  <span class="token comment">&lt;!-- Load from unpkg --&gt;</span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://unpkg.com/htmx.org@1.1.0<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
   <span class="token comment">&lt;!-- have a button POST a click via AJAX --&gt;</span>
