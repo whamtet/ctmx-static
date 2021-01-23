@@ -2,7 +2,7 @@
 (use 'ctmx-static.core)
 
 (defn reload []
-  (use 'ctmx-static.core :reload)
+  #_ #_(use 'ctmx-static.core :reload)
   (ctmx/spit-static "./" (routes false)))
 
 (require '[cljs.build.api :as b])

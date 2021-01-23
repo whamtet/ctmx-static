@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><title>ctmx-static</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></head><body hx-ext="static"><form hx-get="form" id="form"><input name="form_first-name" type="text" value="hello"><input type="submit"></form></body><script src="/htmx.min.js"></script><script src="/out/ctmx_static.js"></script><script>htmx.config.defaultSettleDelay = 0;
+   htmx.config.defaultSwapStyle = 'outerHTML';</script><script>var requestConfig;
+var toSwap;
+
+htmx.defineExtension('static', {
+  onEvent : function(name, evt) {
+    if (name === 'htmx:beforeRequest') {
+      requestConfig = evt.detail.requestConfig;
+    }
+    if (name === 'htmx:beforeSwap') {
+      toSwap = eval(evt.detail.xhr.response + '_static')(requestConfig);
+      if (toSwap === undefined) {
+        evt.preventDefault();
+      }
+    }
+  },
+  transformResponse: function(text, xhr, elt) {
+    return toSwap;
+  }
+});
+</script></html>

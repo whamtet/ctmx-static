@@ -1,8 +1,9 @@
 (ns ctmx-static.core
   (:require
-    [ctmx.rt :as rt]
     #?(:clj [clojure.java.io :as io])
-    #?(:clj [ctmx.core :as ctmx]))
+    #?(:clj [ctmx.core :as ctmx])
+    #?(:cljs [ctmx_static.eval])
+    [ctmx.rt :as rt])
   #?(:cljs
       (:require-macros
         [ctmx.core :as ctmx])))
@@ -15,7 +16,7 @@
    [:input {:type "text" :name (path "first-name") :value first-name}]
    [:input {:type "submit"}]])
 
-(ctmx/defstatic page [release?]
+#_(ctmx/defstatic page [release?]
   [:head
    [:title "ctmx-static"]
    [:meta {:http-equiv "Content-Type" :content "text/html; charset=utf-8"}]]
@@ -30,6 +31,8 @@
   [:script (-> "htmx_wrapper.js"
                io/resource
                slurp)])
+
+(defn page [release?] "")
 
 (defn routes [release?]
   {"" (page release?)

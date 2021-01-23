@@ -1,7 +1,7 @@
 (require '[ctmx.core :as ctmx])
 (use 'ctmx-static.core)
 
-(ctmx/spit-static "dist/" (routes true))
+;(ctmx/spit-static "dist/" (routes true))
 
 (require '[cljs.build.api :as b])
 
@@ -11,6 +11,11 @@
   (b/build "src"
     {:output-to "dist/ctmx_static.js"
      :output-dir "release"
-     :optimizations :advanced
+     :optimizations :simple
+     :pretty-print false
+     :optimize-constants true
+     :static-fns true
+     :dump-core false
+;     :cache-analysis true
      :verbose true})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))
