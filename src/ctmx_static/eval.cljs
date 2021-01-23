@@ -9,8 +9,8 @@
 (defn load-fn [args cb]
   (cb {:lang :clj
        :source
-       (if (-> args :name (= 'ctmx-static.ctmx))
-         (util/slurpm "ctmx_static/ctmx.cljs")
+       (if (-> args :name (= 'ctmx.core))
+         (util/slurpm "ctmx/core.cljs")
          "")}))
 
 (defn eval [source]
@@ -18,6 +18,7 @@
                                       :load load-fn} prn))
 
 (defn init []
-  (eval "(ns cljs.user (:require-macros [ctmx-static.ctmx :as ctmx]))"))
+  (eval (util/slurpm "cljs/user.cljs")))
 
+(set! js/window.onload init)
 (set! js/e eval)
