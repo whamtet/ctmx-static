@@ -24,8 +24,8 @@ htmx.defineExtension('static', {
       } else {
         toSwap = undefined;
       }
-      if (toSwap === undefined || true) {
-        evt.preventDefault();
+      if (toSwap === undefined || toSwap === null) {
+        return false;
       }
     }
   },
