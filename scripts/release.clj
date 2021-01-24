@@ -15,7 +15,5 @@
      :pretty-print false
      :optimize-constants true
      :static-fns true
-     :dump-core false
-;     :cache-analysis true
      :verbose true})
   (println "... done. Elapsed" (/ (- (System/nanoTime) start) 1e9) "seconds"))
