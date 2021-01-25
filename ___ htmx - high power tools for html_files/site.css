@@ -80,6 +80,7 @@ pre[class*="language-"] {
 }
 @media (min-width: 45rem) {
     pre[class*="language-"] {
+        margin-left: 19px !important;
         margin-right: 48px !important;
     }
 }

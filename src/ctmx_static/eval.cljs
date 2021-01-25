@@ -20,16 +20,15 @@
 
 (defn eval-endpoints [source]
   (eval-raw
-    (str source " (endpoints)")
-    (fn [{:keys [value]}]
-      (prn 'value value)
-      (rt/update-endpoints value))))
+    (str source " " (util/slurpm "endpoints.cljs"))
+    #(-> % :value rt/update-endpoints)))
 
 (defn eval [source] (eval-raw source prn))
 
 (defn init []
   (binding [*print-err-fn* (constantly nil)]
     (eval-endpoints (util/slurpm "user.cljs")))
+  (eval-raw "(set-demo)" (constantly nil))
   (println "loaded"))
 
 (set! js/window.onload init)

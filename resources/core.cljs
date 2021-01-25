@@ -39,11 +39,11 @@
     1 `(fn ~args ~expanded)
     `(fn this#
        ([req#]
-         (let [{:keys [~'params]} req#
-               ~'stack (rt/conj-stack ~(name n) req#)]
-           (this#
-             req#
-             ~@(map expand-params (rest args)))))
+        (let [{:keys [~'params]} req#
+              ~'stack (rt/conj-stack ~(name n) req#)]
+          (this#
+            req#
+            ~@(map expand-params (rest args)))))
        (~args
          (let [~@(for [sym (rest args)
                        :let [f (sym->f sym)]
@@ -81,3 +81,9 @@
            expand-parser-hints
            (with-stack name args)
            (make-f name args))))
+
+(defmacro make-routes [path f]
+  `(def ~(-> path
+             (.replace "/" "")
+             symbol
+             (with-meta {:endpoint true})) ~f))

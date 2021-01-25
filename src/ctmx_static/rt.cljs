@@ -25,10 +25,11 @@
    :request-method (keyword verb)})
 
 (defn wrap-response [req f]
-  (some->> req
+  (some->> (or req {})
            js->clj
            walk/keywordize-keys
            coerce-static
            f
            hiccups/html))
 
+(set! js/t #(prn @endpoints))
