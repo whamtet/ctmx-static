@@ -1,7 +1,8 @@
-(require '[ctmx.core :as ctmx])
-(use 'ctmx-static.core)
-
-;(ctmx/spit-static "dist/" (routes true))
+(spit "dist/index.html"
+      (.replace
+        (slurp "index.html")
+        "out/ctmx"
+        "ctmx"))
 
 (require '[cljs.build.api :as b])
 
