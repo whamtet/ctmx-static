@@ -1,3 +1,5 @@
 #!/bin/sh
+scripts/copy_dist
+
 rm -r release
 rlwrap lein trampoline run -m clojure.main scripts/release.clj

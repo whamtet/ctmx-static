@@ -2,6 +2,13 @@
   (:require-macros
     [ctmx.core :as ctmx]))
 
-(ctmx/defcomponent ^:endpoint form [req first-name]
-  [:form {:id id :hx-get "form"}
-   [:input {:type "submit"}]])
+(ctmx/defendpoint ^:endpoint my-endpoint [req])
+
+#_(defn endpoints []
+  (->> 'cljs.user
+       ns-interns
+       vals
+       (map meta)
+       (filter :endpoint)
+       (map #(-> % :name str))
+       set))

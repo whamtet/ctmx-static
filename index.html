@@ -50,11 +50,7 @@
   <p>
     Go ahead and edit the code
   </p>
-<pre id="editor1" class="language-html" style="height: 200px" hx-edit="/fuck">
-(ns cljs.user
-  (:require-macros
-    [ctmx.core :as ctmx]))
-
+<pre id="editor1" class="language-html" style="height: 100px">
 (ctmx/defcomponent ^:endpoint form [req first-name]
   [:form {:id id :hx-get "form"}
    [:input {:type "submit"}]])
