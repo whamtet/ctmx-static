@@ -7,14 +7,12 @@
 
 (def state (cljs.js/empty-state))
 
-(defn load-fn [{:keys [name] :as args} cb]
-  (prn 'load-fn args)
+(defn load-fn [{:keys [name]} cb]
   (cb {:lang :clj
        :source
        (if (= 'ctmx.core name)
          (util/slurpm "core.cljs")
-         (str
-           "(ns " name ")"))}))
+         "")}))
 
 (defn eval-raw [source cb]
   (cljs.js/eval-str state source nil {:eval cljs.js/js-eval
@@ -22,7 +20,7 @@
 
 (defn eval-endpoints [source]
   (eval-raw
-    (str source #_" (endpoints)")
+    (str source " (endpoints)")
     (fn [{:keys [value]}]
       (prn 'value value)
       (rt/update-endpoints value))))
@@ -30,7 +28,7 @@
 (defn eval [source] (eval-raw source prn))
 
 (defn init []
-  (binding [] ;[*print-err-fn* (constantly nil)]
+  (binding [*print-err-fn* (constantly nil)]
     (eval-endpoints (util/slurpm "user.cljs")))
   (println "loaded"))
 

@@ -2,9 +2,9 @@
   (:require-macros
     [ctmx.core :as ctmx]))
 
-(ctmx/defendpoint ^:endpoint my-endpoint [req])
+(ctmx/defcomponent ^:endpoint my-endpoint [req])
 
-#_(defn endpoints []
+(defn endpoints []
   (->> 'cljs.user
        ns-interns
        vals
