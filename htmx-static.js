@@ -22,7 +22,7 @@ htmx.defineExtension('static', {
     }
     if (name === 'htmx:beforeSwap') {
       if (ctmx_static.rt.endpoint(requestConfig.path)) {
-        const f = cljs.user[requestConfig.path];
+        const f = cljs.user[requestConfig.path.replaceAll('-', '_')];
         toSwap = ctmx_static.rt.wrap_response(requestConfig, f);
       } else {
         return false;

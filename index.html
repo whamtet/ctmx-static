@@ -43,7 +43,11 @@
     It provides a unified, react like format for rendering components on the backend that feels like frontend code
     but without the restrictions and load times of javascript.
   </p>
-<h2>demo</h2>
+  <p>
+    The following examples do however use javascript.
+    This enables you to experiment with 'backend code' without having to execute anything untrusted on the server.
+  </p>
+<h2>introduction</h2>
   <div id="demo"></div>
 
 <pre id="editor1" class="language-html" style="height: 400px">
@@ -145,6 +149,38 @@
     This is because <a>path</a> includes array indices in the component tree.  We must also avoid <a>for</a> lazy comprehension.
     Use <a>ctmx.core/forall</a> instead.
   </p>
+
+  <h2>parameter casting</h2>
+  <div id="parameter-casting"></div>
+  <pre id="editor4" class="language-html" style="height: 250px">
+
+  (defcomponent ^:endpoint click-div [req ^:int num-clicks]
+    [:form {:id id :hx-get "click-div" :hx-trigger "click"}
+      [:input {:type "hidden" :name (path "num-clicks") :value (inc num-clicks)}]
+      "You have clicked me " num-clicks " times!"])
+
+  (make-routes
+    "/parameter-casting"
+    (fn [req]
+      (click-div req 0)))
+
+  </pre>
+
+  <p>
+    Because htmx submits parameters as strings we can cast them as in the above example.<br>
+    Supported casts include <a>^:int</a> <a>^:boolean</a> <a>^:boolean-true</a> and <a>^:float</a>.
+    <a>^:boolean-true</a> defaults to true when nothing is set.
+  </p>
+  <p>
+    We may also cast within the body of <a>defcomponent</a>.
+  </p>
+
+  <pre class="language-html" style="height: 100px">
+  [:div
+    (if ^:boolean (value "grumpy")
+      "Cheer up!"
+      "How are you?")]
+  </pre>
 </div>
 </body>
 <script src="src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -183,7 +219,7 @@
   };
 
   const edStr = s => editorialize('editor' + s);
-  onload = () => ctmx_static.eval.init([1, 2, 3].map(edStr));
+  onload = () => ctmx_static.eval.init([1, 2, 3, 4].map(edStr));
 </script>
 
 </html>
