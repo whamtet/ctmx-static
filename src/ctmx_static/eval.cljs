@@ -19,17 +19,15 @@
                                       :load load-fn} cb))
 
 (defn eval-endpoints [source]
-  (eval-raw
-    (str source " " (util/slurpm "endpoints.cljs"))
-    #(-> % :value rt/update-endpoints)))
-
-(defn eval [source] (eval-raw source prn))
+  (binding [*print-err-fn* (constantly nil)]
+    (eval-raw
+      (str source " " (util/slurpm "endpoints.cljs"))
+      #(-> % :value rt/update-endpoints))))
 
 (defn init []
-  (binding [*print-err-fn* (constantly nil)]
-    (eval-endpoints (util/slurpm "user.cljs")))
-  (eval-raw "(set-demo)" (constantly nil))
+  (eval-endpoints (util/slurpm "user.cljs"))
+  (-> js/editor .getSession .getValue eval-endpoints)
   (println "loaded"))
 
 (set! js/window.onload init)
-(set! js/e eval)
+(set! js/e #(eval-raw % prn))

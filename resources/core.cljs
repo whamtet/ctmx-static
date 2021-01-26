@@ -83,7 +83,4 @@
            (make-f name args))))
 
 (defmacro make-routes [path f]
-  `(def ~(-> path
-             (.replace "/" "")
-             symbol
-             (with-meta {:endpoint true})) ~f))
+  `(ctmx-static.rt/send-root! ~path ~f))

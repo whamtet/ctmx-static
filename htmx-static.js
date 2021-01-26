@@ -27,7 +27,6 @@ htmx.defineExtension('static', {
     }
   },
   transformResponse: function(text, xhr, elt) {
-    console.log('transform');
     return toSwap;
   }
 });
