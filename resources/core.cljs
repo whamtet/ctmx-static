@@ -84,3 +84,6 @@
 
 (defmacro make-routes [path f]
   `(ctmx-static.rt/send-root! ~path ~f))
+
+(defmacro update-params [f & body]
+  `(binding [rt/*params* (~f rt/*params*)] ~@body))

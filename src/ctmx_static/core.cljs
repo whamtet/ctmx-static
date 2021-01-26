@@ -5,5 +5,6 @@
     ctmx-static.util
     ;; for macroexpand
     [clojure.walk :as walk]
+    ctmx.form
     [ctmx.render :as render]
     [ctmx.rt :as rt]))

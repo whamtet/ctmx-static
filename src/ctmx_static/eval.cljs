@@ -25,7 +25,10 @@
        (string/join "\n")))
 
 (defn eval-endpoints [source]
-  (binding [*print-err-fn* (constantly nil)]
+  (binding [*print-err-fn*
+            (if (-> source .trim (.startsWith ";s"))
+              *print-err-fn*
+              (constantly nil))]
     (-> source
         filter-use
         (str " " (util/slurpm "endpoints.cljs"))

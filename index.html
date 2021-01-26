@@ -168,7 +168,7 @@
 
   <p>
     Because htmx submits parameters as strings we can cast them as in the above example.<br>
-    Supported casts include <a>^:int</a> <a>^:boolean</a> <a>^:boolean-true</a> and <a>^:float</a>.
+    Supported casts include <a>^:int</a>, <a>^:boolean</a>, <a>^:boolean-true</a> and <a>^:float</a>.
     <a>^:boolean-true</a> defaults to true when nothing is set.
   </p>
   <p>
@@ -181,6 +181,48 @@
       "Cheer up!"
       "How are you?")]
   </pre>
+
+  <h2>transforming parameters to JSON</h2>
+  <div id="transforming"></div>
+  <pre id="editor5" class="language-html" style="height: 800px">
+
+  (def initial-customers
+    {:customer-list
+      [{:customer {:first-name "Matthew" :last-name "Molloy"}}
+       {:customer {:first-name "Chad" :last-name "Thomson"}}]})
+
+  (defn set-initial-customers [req params]
+    (if (-> req :request-method (= :get))
+      (ctmx.form/flatten-json initial-customers)
+      params))
+
+  (defn- hiddens [&amp; pairs]
+    (for [[k v] (partition 2 pairs)]
+      [:input {:type "hidden" :name k :value v}]))
+
+  (defcomponent customer [req]
+    [:div
+      (hiddens
+        (path "first-name") (value "first-name")
+        (path "last-name") (value "last-name"))
+      (value "first-name") " " (value "last-name")])
+
+  (defcomponent ^:endpoint customer-list [req ^:int num-customers]
+    (update-params
+      #(set-initial-customers req %)
+      [:form {:id id :hx-post "customer-list"}
+        (ctmx.rt/map-range customer req num-customers)
+        (hiddens (path "num-customers") num-customers)
+        [:input {:type "submit" :value "Add Customer"}]]))
+
+  (make-routes
+    "/transforming"
+    (fn [req]
+      (customer-list req 2)))
+  </pre>
+  <p>
+
+  </p>
 </div>
 </body>
 <script src="src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -219,7 +261,7 @@
   };
 
   const edStr = s => editorialize('editor' + s);
-  onload = () => ctmx_static.eval.init([1, 2, 3, 4].map(edStr));
+  onload = () => ctmx_static.eval.init([1, 2, 3, 4, 5].map(edStr));
 </script>
 
 </html>

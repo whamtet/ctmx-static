@@ -33,9 +33,14 @@
            f
            hiccups/html))
 
+(def init-request
+  {:headers {}
+   :params {}
+   :request-method :get})
+
 (defn send-root! [path f]
   (let [id (.replace path "/" "")]
-    (-> id js/document.getElementById .-innerHTML (set! (-> nil f hiccups/html)))
+    (-> id js/document.getElementById .-innerHTML (set! (-> init-request f hiccups/html)))
     (-> id js/document.getElementById js/htmx.process)))
 
 (set! js/t #(prn @endpoints))
