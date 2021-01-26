@@ -62,12 +62,24 @@
      [:input {:type "text"
               :name "my-name"
               :hx-patch "hello"
-              :hx-target "#hello"
-              :hx-swap "outerHTML"}]
+              :hx-target "#hello"}]
      (hello req "")]))
 
 </pre>
-  <p>At the core of <a>c</a>tmx are the <a>defcomponent</a> and <a>make-routes</a> macros.</p>
+  <p>
+    The core of ctmx is the <a>defcomponent</a> macro which expands to both an endpoint and an ordinary function.
+    Try inspecting the above text input.  You should see something like the following.
+  </p>
+  <p>
+    <img src="inspect.png">
+  </p>
+  <p>
+    Now try editing the text.  On the input's default action (blur) it will issue a request to the "hello" endpoint and update its contents.
+  </p>
+  <p>
+    This live demo is javascript hosted so the browser logs instead of issuing an actual request.
+    In a regular deployment the code runs on the server and you can observe requests under the 'Network' tab.
+  </p>
 
 </div>
 </body>

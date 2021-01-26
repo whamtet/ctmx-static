@@ -6,6 +6,11 @@ const mockXhr = {
   getAllResponseHeaders: () => ''
 };
 
+const logRequest = () => console.log(
+  requestConfig.verb.toUpperCase(),
+  '/' + requestConfig.path + queryString(requestConfig.parameters)
+);
+
 htmx.defineExtension('static', {
   onEvent : function(name, evt) {
     if (name === 'htmx:beforeRequest') {
@@ -13,6 +18,7 @@ htmx.defineExtension('static', {
       xhr.send = xhr.onload;
       evt.detail.xhr = mockXhr;
       requestConfig = evt.detail.requestConfig;
+      logRequest();
     }
     if (name === 'htmx:beforeSwap') {
       if (ctmx_static.rt.endpoint(requestConfig.path)) {
