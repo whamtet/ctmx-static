@@ -8,7 +8,8 @@
 (def ^:private endpoints (atom #{}))
 
 (defn update-endpoints [u]
-  (reset! endpoints u))
+  (when u
+    (reset! endpoints u)))
 (defn endpoint [s]
   (contains? @endpoints s))
 

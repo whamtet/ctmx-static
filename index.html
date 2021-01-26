@@ -112,6 +112,39 @@
     The <a>path</a> function macroexpands to a unique string based on the call stack of nested components.
     This prevents name clashes if the <a>form</a> component exists multiple times on a page.
   </p>
+  <p>
+    Any component with <a>^:endpoint</a> set must also have id set to <a>id</a>.
+    In general the DOM can be updated at any point in the component tree and ctmx uses component id to set <a>path</a> consistently.
+  </p>
+
+  <h2>nesting components</h2>
+  <div id="nesting-components"></div>
+  <pre id="editor3" class="language-html" style="height: 400px">
+
+  (defcomponent table-row [req i person]
+    [:tr
+      [:td (:first-name person)] [:td (:last-name person)]])
+
+  (defcomponent table [req]
+    [:table
+      (ctmx.rt/map-indexed
+        table-row
+        req
+        [{:first-name "Matthew" :last-name "Molloy"}
+         {:first-name "Chad" :last-name "Thomson"}])])
+
+  (make-routes
+    "/nesting-components"
+    (fn [req]
+      (table req)))
+
+  </pre>
+
+  <p>
+    In order for <a>path</a> to work correctly we must use <a>ctmx.rt/map-indexed</a> instead of <a>clojure.core/map-indexed</a>
+    This is because <a>path</a> includes array indices in the component tree.  We must also avoid <a>for</a> lazy comprehension.
+    Use <a>ctmx.core/forall</a> instead.
+  </p>
 </div>
 </body>
 <script src="src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -150,7 +183,7 @@
   };
 
   const edStr = s => editorialize('editor' + s);
-  onload = () => ctmx_static.eval.init([1, 2].map(edStr));
+  onload = () => ctmx_static.eval.init([1, 2, 3].map(edStr));
 </script>
 
 </html>
