@@ -34,7 +34,7 @@
 
 (defn send-root! [path f]
   (let [id (.replace path "/" "")]
-    (-> id js/document.getElementById .-outerHTML (set! (-> nil f hiccups/html)))
+    (-> id js/document.getElementById .-innerHTML (set! (-> nil f hiccups/html)))
     (-> id js/document.getElementById js/htmx.process)))
 
 (set! js/t #(prn @endpoints))

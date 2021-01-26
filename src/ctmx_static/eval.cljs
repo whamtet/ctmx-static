@@ -28,13 +28,13 @@
   (binding [*print-err-fn* (constantly nil)]
     (-> source
         filter-use
-        (str " "  (util/slurpm "endpoints.cljs"))
+        (str " " (util/slurpm "endpoints.cljs"))
         (eval-raw  #(-> % :value rt/update-endpoints)))))
 
-(defn init []
+(defn init [editors]
   (eval-endpoints (util/slurpm "user.cljs"))
-  (-> js/editor .getSession .getValue eval-endpoints)
+  (doseq [editor editors]
+    (-> editor .getSession .getValue eval-endpoints))
   (println "loaded"))
 
-(set! js/window.onload init)
 (set! js/e #(eval-raw % prn))

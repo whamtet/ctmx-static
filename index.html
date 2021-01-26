@@ -56,7 +56,7 @@
 (make-routes
   "/demo"
   (fn [req]
-    [:div#demo {:style "padding: 10px"}
+    [:div {:style "padding: 10px"}
      [:label {:style "margin-right: 10px"}
       "What is your name?"]
      [:input {:type "text"
@@ -67,16 +67,7 @@
      (hello req "")]))
 
 </pre>
-<p>The <a href="https://htmx.org/attributes/hx-post"><code>hx-post</code></a> and <a href="https://htmx.org/attributes/hx-swap"><code>hx-swap</code></a> attributes tell htmx:</p>
-<blockquote>
-<p>"When a user clicks on this button, issue an AJAX request to /clicked, and replace the entire button with the response"</p>
-</blockquote>
-<p>htmx is the successor to <a href="http://intercoolerjs.org/">intercooler.js</a></p>
-<p>Read the <a href="https://htmx.org/docs#introduction">docs introduction</a> for a more in-depth... introduction.</p>
-<h2>haiku</h2>
-<p><em>javascript fatigue:<br>
-longing for a hypertext<br>
-already in hand</em></p>
+  <p>At the core of <a>c</a>tmx are the <a>defcomponent</a> and <a>make-routes</a> macros.</p>
 
 </div>
 </body>
@@ -90,12 +81,6 @@ already in hand</em></p>
   htmx.config.defaultSettleDelay = 0;
   htmx.config.defaultSwapStyle = 'outerHTML';
 
-  var editor = ace.edit("editor1");
-  editor.setTheme("ace/theme/tomorrow_night_bright");
-  editor.session.setMode("ace/mode/clojure");
-  editor.setOption('showGutter', false);
-
-
   const delay = f => {
     var pendingDelay;
     return () => {
@@ -106,10 +91,23 @@ already in hand</em></p>
     };
   };
 
-  const sendSession = () => ctmx_static.eval.eval_endpoints(editor.getSession().getValue());
-  const sendSessionDelay = delay(sendSession);
+  const editorialize = id => {
 
-  editor.getSession().on('change', sendSessionDelay);
+    const editor = ace.edit(id);
+    editor.setTheme("ace/theme/tomorrow_night_bright");
+    editor.session.setMode("ace/mode/clojure");
+    editor.setOption('showGutter', false);
+
+    const sendSession = () => ctmx_static.eval.eval_endpoints(editor.getSession().getValue());
+    const sendSessionDelay = delay(sendSession);
+    editor.getSession().on('change', sendSessionDelay);
+
+    return editor;
+
+  };
+
+  const editor1 = editorialize('editor1');
+  onload = () => ctmx_static.eval.init([editor1]);
 </script>
 
 </html>
