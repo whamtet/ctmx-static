@@ -4,4 +4,5 @@ cp -r '___ htmx - high power tools for html_files' dist
 cp htmx-static.js dist
 cp htmx.min.js dist
 cp inspect.png dist
+cp console1.png dist
 cp -r src-min-noconflict dist

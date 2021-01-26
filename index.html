@@ -81,6 +81,37 @@
     In a regular deployment the code runs on the server and you can observe requests under the 'Network' tab.
   </p>
 
+  <h2>handling data flow</h2>
+  <div id="data-flow">
+  </div>
+  <pre id="editor2" class="language-html" style="height: 300px">
+
+  (defcomponent ^:endpoint form [req first-name last-name]
+    [:form {:id id :hx-post "form"}
+      [:input {:type "text" :name (path "first-name") :value first-name}] [:br]
+      [:input {:type "text" :name (path "last-name") :value last-name}] [:br]
+      (when (= ["Barry" "Crump"] [first-name last-name])
+        [:div "A good keen man!"])
+      [:input {:type "submit"}]])
+
+  (make-routes
+    "/data-flow"
+    (fn [req]
+      (form req "Barry" "")))
+  </pre>
+
+  <p>
+    In the first example we hard coded the target id to <a>hello</a>.
+    Because a component can exist multiple times on the page we set input names using <a>path</a>.
+    Try submitting the form and inspecting the browser console.
+  </p>
+  <p>
+    <img src="console1.png">
+  </p>
+  <p>
+    The <a>path</a> function macroexpands to a unique string based on the call stack of nested components.
+    This prevents name clashes if the <a>form</a> component exists multiple times on a page.
+  </p>
 </div>
 </body>
 <script src="src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -118,8 +149,8 @@
 
   };
 
-  const editor1 = editorialize('editor1');
-  onload = () => ctmx_static.eval.init([editor1]);
+  const edStr = s => editorialize('editor' + s);
+  onload = () => ctmx_static.eval.init([1, 2].map(edStr));
 </script>
 
 </html>
