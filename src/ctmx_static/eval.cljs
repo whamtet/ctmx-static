@@ -1,6 +1,7 @@
 (ns ctmx_static.eval
   (:require
     [cljs.js]
+    [clojure.string :as string]
     [ctmx_static.rt :as rt])
   (:require-macros
     [ctmx-static.util :as util]))
@@ -18,11 +19,17 @@
   (cljs.js/eval-str state source nil {:eval cljs.js/js-eval
                                       :load load-fn} cb))
 
+(defn- filter-use [s]
+  (->> (.split s "\n")
+       (remove #(.includes % "(use "))
+       (string/join "\n")))
+
 (defn eval-endpoints [source]
   (binding [*print-err-fn* (constantly nil)]
-    (eval-raw
-      (str source " " (util/slurpm "endpoints.cljs"))
-      #(-> % :value rt/update-endpoints))))
+    (-> source
+        filter-use
+        (str " "  (util/slurpm "endpoints.cljs"))
+        (eval-raw  #(-> % :value rt/update-endpoints)))))
 
 (defn init []
   (eval-endpoints (util/slurpm "user.cljs"))

@@ -48,10 +48,12 @@
 
 <pre id="editor1" class="language-html" style="height: 400px">
 
-(ctmx/defcomponent ^:endpoint hello [req ^:simple my-name]
+(use 'ctmx.core)
+
+(defcomponent ^:endpoint hello [req ^:simple my-name]
   [:div#hello "Hello " my-name])
 
-(ctmx/make-routes
+(make-routes
   "/demo"
   (fn [req]
     [:div#demo {:style "padding: 10px"}

@@ -1,3 +1,3 @@
 (ns cljs.user
   (:require-macros
-    [ctmx.core :as ctmx]))
+    [ctmx.core :refer [defcomponent make-routes]]))
