@@ -146,8 +146,7 @@
 
   <p>
     In order for <a>path</a> to work correctly we must use <a>ctmx.rt/map-indexed</a> instead of <a>clojure.core/map-indexed</a>
-    This is because <a>path</a> includes array indices in the component tree.  We must also avoid <a>for</a> lazy comprehension.
-    Use <a>ctmx.core/forall</a> instead.
+    This is because <a>path</a> includes array indices in the component tree.
   </p>
 
   <h2>parameter casting</h2>
@@ -184,41 +183,54 @@
 
   <h2>transforming parameters to JSON</h2>
   <div id="transforming"></div>
-  <pre id="editor5" class="language-html" style="height: 800px">
+  <pre id="editor5" class="language-html" style="height: 1100px">
 
-  (def initial-customers
+  (defn add-customer [{:keys [first-name last-name customer-list] :as params}]
     {:customer-list
-      [{:customer {:first-name "Matthew" :last-name "Molloy"}}
-       {:customer {:first-name "Chad" :last-name "Thomson"}}]})
-
-  (defn set-initial-customers [req params]
-    (if (-> req :request-method (= :get))
-      (ctmx.form/flatten-json initial-customers)
-      params))
+      (update customer-list
+        :customer
+        #(if (not-empty first-name)
+          (conj (or % []) {:first-name first-name :last-name last-name})
+          (or % [])))})
 
   (defn- hiddens [&amp; pairs]
     (for [[k v] (partition 2 pairs)]
       [:input {:type "hidden" :name k :value v}]))
 
-  (defcomponent customer [req]
-    [:div
-      (hiddens
-        (path "first-name") (value "first-name")
-        (path "last-name") (value "last-name"))
-      (value "first-name") " " (value "last-name")])
+  (defn- text [name value]
+    [:input {:type "text"
+             :name name
+             :value value
+             :required true
+             :style "margin-right: 5px"}])
 
-  (defcomponent ^:endpoint customer-list [req ^:int num-customers]
-    (update-params
-      #(set-initial-customers req %)
-      [:form {:id id :hx-post "customer-list"}
-        (ctmx.rt/map-range customer req num-customers)
-        (hiddens (path "num-customers") num-customers)
-        [:input {:type "submit" :value "Add Customer"}]]))
+  (defn pprint [s]
+    (with-out-str
+      (cljs.pprint/pprint s)))
+
+  (defcomponent customer [req i {:keys [first-name last-name]}]
+    (hiddens
+      (path "first-name") first-name
+      (path "last-name") last-name))
+
+  (defcomponent ^:endpoint customer-list
+    add-customer
+    [req
+     ^:simple first-name
+     ^:simple last-name
+     ^:json customer]
+    [:form {:id id :hx-post "customer-list"}
+      [:pre (-> req :params ctmx.form/json-params pprint)]
+      [:br]
+      (ctmx.rt/map-indexed cljs.user/customer req customer)
+      (text "first-name" first-name)
+      (text "last-name" last-name)
+      [:input {:type "submit" :value "Add Customer"}]])
 
   (make-routes
     "/transforming"
     (fn [req]
-      (customer-list req 2)))
+      (customer-list req "Joe" "Stewart" [])))
   </pre>
   <p>
 

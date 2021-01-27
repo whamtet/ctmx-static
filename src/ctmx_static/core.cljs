@@ -3,6 +3,7 @@
     ctmx-static.eval
     ctmx-static.rt
     ctmx-static.util
+    cljs.pprint
     ;; for macroexpand
     [clojure.walk :as walk]
     ctmx.form
