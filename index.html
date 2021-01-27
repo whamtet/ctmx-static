@@ -51,6 +51,7 @@
   <div id="demo"></div>
 
 <pre id="editor1" class="language-html" style="height: 400px">
+;; this is normally on the backend
 
 (use 'ctmx.core)
 
@@ -90,18 +91,18 @@
   </div>
   <pre id="editor2" class="language-html" style="height: 300px">
 
-  (defcomponent ^:endpoint form [req first-name last-name]
-    [:form {:id id :hx-post "form"}
-      [:input {:type "text" :name (path "first-name") :value first-name}] [:br]
-      [:input {:type "text" :name (path "last-name") :value last-name}] [:br]
-      (when (= ["Barry" "Crump"] [first-name last-name])
-        [:div "A good keen man!"])
-      [:input {:type "submit"}]])
+(defcomponent ^:endpoint form [req first-name last-name]
+  [:form {:id id :hx-post "form"}
+    [:input {:type "text" :name (path "first-name") :value first-name}] [:br]
+    [:input {:type "text" :name (path "last-name") :value last-name}] [:br]
+    (when (= ["Barry" "Crump"] [first-name last-name])
+      [:div "A good keen man!"])
+    [:input {:type "submit"}]])
 
-  (make-routes
-    "/data-flow"
-    (fn [req]
-      (form req "Barry" "")))
+(make-routes
+  "/data-flow"
+  (fn [req]
+    (form req "Barry" "")))
   </pre>
 
   <p>
@@ -125,22 +126,22 @@
   <div id="nesting-components"></div>
   <pre id="editor3" class="language-html" style="height: 400px">
 
-  (defcomponent table-row [req i person]
-    [:tr
-      [:td (:first-name person)] [:td (:last-name person)]])
+(defcomponent table-row [req i person]
+  [:tr
+    [:td (:first-name person)] [:td (:last-name person)]])
 
-  (defcomponent table [req]
-    [:table
-      (ctmx.rt/map-indexed
-        table-row
-        req
-        [{:first-name "Matthew" :last-name "Molloy"}
-         {:first-name "Chad" :last-name "Thomson"}])])
+(defcomponent table [req]
+  [:table
+    (ctmx.rt/map-indexed
+      table-row
+      req
+      [{:first-name "Matthew" :last-name "Molloy"}
+       {:first-name "Chad" :last-name "Thomson"}])])
 
-  (make-routes
-    "/nesting-components"
-    (fn [req]
-      (table req)))
+(make-routes
+  "/nesting-components"
+  (fn [req]
+    (table req)))
 
   </pre>
 
@@ -153,15 +154,15 @@
   <div id="parameter-casting"></div>
   <pre id="editor4" class="language-html" style="height: 250px">
 
-  (defcomponent ^:endpoint click-div [req ^:int num-clicks]
-    [:form {:id id :hx-get "click-div" :hx-trigger "click"}
-      [:input {:type "hidden" :name (path "num-clicks") :value (inc num-clicks)}]
-      "You have clicked me " num-clicks " times!"])
+(defcomponent ^:endpoint click-div [req ^:int num-clicks]
+  [:form {:id id :hx-get "click-div" :hx-trigger "click"}
+    [:input {:type "hidden" :name (path "num-clicks") :value (inc num-clicks)}]
+    "You have clicked me " num-clicks " times!"])
 
-  (make-routes
-    "/parameter-casting"
-    (fn [req]
-      (click-div req 0)))
+(make-routes
+  "/parameter-casting"
+  (fn [req]
+    (click-div req 0)))
 
   </pre>
 
@@ -185,44 +186,44 @@
   <div id="transforming"></div>
   <pre id="editor5" class="language-html" style="height: 850px">
 
-  (defn add-customer [{:keys [first-name last-name customer-list]}]
-    {:customer-list
-      (update customer-list
-        :customer
-        #(if (not-empty first-name)
-          (conj (or % []) {:first-name first-name :last-name last-name})
-          (or % [])))})
+(defn add-customer [{:keys [first-name last-name customer-list]}]
+  {:customer-list
+    (update customer-list
+      :customer
+      #(conj (or % []) {:first-name first-name :last-name last-name}))})
 
-  (defn- text [name value]
-    [:input {:type "text"
-             :name name
-             :value value
-             :required true
-             :style "margin-right: 5px"}])
+(defn- text [name value]
+  [:input {:type "text"
+           :name name
+           :value value
+           :required true
+           :style "margin-right: 5px"}])
 
-  (defn pprint [s]
-    (with-out-str
-      (cljs.pprint/pprint s)))
+(defn pprint [s]
+  (with-out-str
+    (cljs.pprint/pprint s)))
 
-  (defcomponent customer [req i {:keys [first-name last-name]}]
-    [:div
-      [:input {:type "hidden" :name (path "first-name") :value first-name}]
-      [:input {:type "hidden" :name (path "last-name") :value last-name}]])
+(defcomponent customer [req i {:keys [first-name last-name]}]
+  [:div
+    [:input {:type "hidden" :name (path "first-name") :value first-name}]
+    [:input {:type "hidden" :name (path "last-name") :value last-name}]])
 
-  (defcomponent ^:endpoint ^{:params add-customer} customer-list
-    [req first-name last-name ^:json customer]
-    [:form {:id id :hx-post "customer-list"}
-      [:pre (-> req :params ctmx.form/json-params pprint)]
-      [:br]
-      (ctmx.rt/map-indexed cljs.user/customer req customer)
-      (text "first-name" first-name)
-      (text "last-name" last-name)
-      [:input {:type "submit" :value "Add Customer"}]])
+(defcomponent ^:endpoint ^{:params add-customer} customer-list
+  [req first-name last-name ^:json customer]
+  [:form {:id id :hx-post "customer-list"}
+    ;; display the nested params
+    [:pre (-> req :params ctmx.form/json-params pprint)]
+    [:br]
 
-  (make-routes
-    "/transforming"
-    (fn [req]
-      (customer-list req "Joe" "Stewart" [])))
+    (ctmx.rt/map-indexed cljs.user/customer req customer)
+    (text "first-name" first-name)
+    (text "last-name" last-name)
+    [:input {:type "submit" :value "Add Customer"}]])
+
+(make-routes
+  "/transforming"
+  (fn [req]
+    (customer-list req "Joe" "Stewart" [])))
   </pre>
   <p>
     The <a>path</a> naming scheme we saw earlier provides a convenient way to transform flat html forms into nested structures.
