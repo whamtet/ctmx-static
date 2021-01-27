@@ -1,0 +1,137 @@
+
+<!-- saved from url=(0026)https://htmx.org/examples/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>(/) ctmx - backend tools for htmx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./index_files/site.css">
+    <script src="./index_files/htmx.js"></script>
+    <script src="./index_files/class-tools.js"></script>
+    <script src="./index_files/preload.js"></script>
+<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}                    </style></head>
+<body hx-ext="class-tools, preload">
+<div class="top-nav">
+    <div class="c">
+        <div class="menu">
+            <div class="logo-wrapper">
+                <span hx-get="/" hx-target="body" hx-push-url="true" class="logo light"><a>c</a>tmx</span>
+                <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
+                    <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="60" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                </svg>
+            </div>
+
+            <div id="nav" class="navigation nav">
+                <div class="navigation-items" preload="mouseover">
+                    <div>
+                        <a href="/examples/index.htm">examples</a>
+                    </div>
+                </div>
+                <div class="github-stars">
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="c content">
+    <h2>Examples</h2>
+<p>The following examples are taken from <a href="https://htmx.org/examples">htmx</a></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://htmx.org/examples/click-to-edit">Click To Edit</a></td>
+<td>Demonstrates inline editing of a data object</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/bulk-update">Bulk Update</a></td>
+<td>Demonstrates bulk updating of multiple rows of data</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/click-to-load">Click To Load</a></td>
+<td>Demonstrates clicking to load more rows in a table</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/delete-row">Delete Row</a></td>
+<td>Demonstrates row deletion in a table</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/lazy-load">Lazy Loading</a></td>
+<td>Demonstrates how to lazy load content</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/inline-validation">Inline Validation</a></td>
+<td>Demonstrates how to do inline field validation</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/infinite-scroll">Infinite Scroll</a></td>
+<td>Demonstrates infinite scrolling of a page</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/active-search">Active Search</a></td>
+<td>Demonstrates the active search box pattern</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/progress-bar">Progress Bar</a></td>
+<td>Demonstrates a job-runner like progress bar</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/value-select">Value Select</a></td>
+<td>Demonstrates making the values of a select dependent on another select</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/animations">Animations</a></td>
+<td>Demonstrates various animation techniques</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/file-upload">File Upload</a></td>
+<td>Demonstrates how to upload a file via ajax with a progress bar</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/dialogs">Dialogs - Browser</a></td>
+<td>Demonstrates the prompt and confirm dialogs</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/modal-uikit">Dialogs - UIKIt</a></td>
+<td>Demonstrates modal dialogs using UIKit</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/modal-bootstrap">Dialogs - Bootstrap</a></td>
+<td>Demonstrates modal dialogs using Bootstrap</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/modal-custom">Dialogs - Custom</a></td>
+<td>Demonstrates modal dialogs from scratch</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/tabs-hateoas">Tabs (Using HATEOAS)</a></td>
+<td>Demonstrates how to display and select tabs using HATEOAS principles</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/tabs-hyperscript">Tabs (Using Hyperscript)</a></td>
+<td>Demonstrates how to display and select tabs using Hyperscript</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/keyboard-shortcuts">Keyboard Shortcuts</a></td>
+<td>Demonstrates how to create keyboard shortcuts for htmx enabled elements</td>
+</tr>
+<tr>
+<td><a href="https://htmx.org/examples/sortable">Sortable</a></td>
+<td>Demonstrates how to use htmx with the Sortable.js plugin to implement drag-and-drop reordering</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+
+</body></html>
