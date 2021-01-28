@@ -91,10 +91,9 @@
 <script src="../htmx-static.js"></script>
 <script src="./click-to-edit_files/class-tools.js"></script>
 <script src="./click-to-edit_files/preload.js"></script>
-<script src="/out/ctmx_static.js"></script>
 <script src="../common.js"></script>
 <script>
-const edStr = s => editorialize('editor' + s);
-onload = () => ctmx_static.eval.init([1].map(edStr));
+edAppend('editor1');
 </script>
+<script src="/out/ctmx_static.js"></script>
 </html>

@@ -11,6 +11,32 @@ const delay = f => {
   };
 };
 
+const loadScript = (src, onload) => {
+  // Create new script element
+  const script = document.createElement('script');
+  script.src = src;
+  script.onload = onload;
+  document.head.appendChild(script);
+}
+
+const editors = [];
+const loadCljsTrue = (src) => {
+  loadScript(src, () => ctmx_static.eval.init(editors));
+};
+
+var cljsSrc;
+var hasFocussed = false;
+const editorFocus = () => {
+  if (!hasFocussed) {
+    hasFocussed = true;
+    if (cljsSrc) {
+      loadCljsTrue(cljsSrc);
+    } else {
+      ctmx_static.eval.init(editors);
+    }
+  }
+}
+
 const editorialize = id => {
 
   const editor = ace.edit(id);
@@ -20,11 +46,16 @@ const editorialize = id => {
 
   const sendSession = () => ctmx_static.eval.eval_endpoints(editor.getSession().getValue());
   const sendSessionDelay = delay(sendSession);
+  editor.on('focus', editorFocus);
   editor.getSession().on('change', sendSessionDelay);
 
   return editor;
 
 };
 
-const prod = () => location.href = location.href.replace('http://localhost:8000', 'https://ctmx.info');
+const edAppend = id => editors.push(editorialize(id));
+
+const prod = () => location.href = location.href.replace('http://localhost:8000', 'https://ctmx.info').replace('dist/', '');
 const dev = () => location.href = location.href.replace('https://ctmx.info', 'http://localhost:8000');
+
+const loadCljs = (src) => cljsSrc = src;

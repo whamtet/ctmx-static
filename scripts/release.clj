@@ -1,12 +1,14 @@
-(defn copy-index [from]
-  (spit (str "dist/" from)
-        (.replace
-          (slurp from)
-          "out/ctmx"
-          "ctmx")))
+(def s1 "<script src=\"/out/ctmx_static.js\"></script>")
+(def s2 "<script>loadCljs('%s')</script>")
 
-(copy-index "index.html")
-(copy-index "examples/click-to-edit.htm")
+(defn copy-index [from path]
+  (spit (str "dist/" from)
+        (-> from
+            slurp
+            (.replace s1 (format s2 path)))))
+
+(copy-index "index.html" "ctmx_static.js")
+(copy-index "examples/click-to-edit.htm" "../ctmx_static.js")
 
 (require '[cljs.build.api :as b])
 
