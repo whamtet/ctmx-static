@@ -1,3 +1,5 @@
+(require '[ctmx-static.build :as build])
+
 (def s1 "<script src=\"/out/ctmx_static.js\"></script>")
 (def s2 "<script>loadCljs('%s')</script>")
 
@@ -5,6 +7,7 @@
   (spit (str "dist/" from)
         (-> from
             slurp
+            build/populate-html
             (.replace s1 (format s2 path)))))
 
 (copy-index "index.html" "ctmx_static.js")
