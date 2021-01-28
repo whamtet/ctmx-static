@@ -6,3 +6,5 @@ cp htmx.min.js dist
 cp inspect.png dist
 cp console1.png dist
 cp -r src-min-noconflict dist
+cp -r examples dist
+cp common.js dist

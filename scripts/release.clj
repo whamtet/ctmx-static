@@ -1,8 +1,12 @@
-(spit "dist/index.html"
-      (.replace
-        (slurp "index.html")
-        "out/ctmx"
-        "ctmx"))
+(defn copy-index [from]
+  (spit (str "dist/" from)
+        (.replace
+          (slurp from)
+          "out/ctmx"
+          "ctmx")))
+
+(copy-index "index.html")
+(copy-index "examples/click-to-edit.htm")
 
 (require '[cljs.build.api :as b])
 
