@@ -34,10 +34,11 @@
         (str " " (util/slurpm "endpoints.cljs"))
         (eval-raw  #(-> % :value rt/update-endpoints)))))
 
-(defn init [editors]
+(defn init []
   (eval-endpoints (util/slurpm "user.cljs"))
-  (doseq [editor editors]
+  (doseq [editor js/editors]
     (-> editor .getSession .getValue eval-endpoints))
   (println "loaded"))
 
+(set! js/onload init)
 (set! js/e #(eval-raw % prn))

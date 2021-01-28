@@ -246,12 +246,10 @@
 <script src="htmx-static.js"></script>
 <script src="./___ htmx - high power tools for html_files/class-tools.js"></script>
 <script src="./___ htmx - high power tools for html_files/preload.js"></script>
-<script src="out/ctmx_static.js"></script>
 <script src="common.js"></script>
 <script>
-  const edStr = s => editorialize('editor' + s);
   editorialize('boolean-body');
-  onload = () => ctmx_static.eval.init([1, 2, 3, 4, 5].map(edStr));
+  [1, 2, 3, 4, 5].forEach(i => edAppend('editor' + i));
 </script>
-
+<script src="out/ctmx_static.js"></script>
 </html>

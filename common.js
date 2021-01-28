@@ -26,5 +26,8 @@ const editorialize = id => {
 
 };
 
+var editors = [];
+const edAppend = s => editors.push(editorialize(s));
+
 const prod = () => location.href = location.href.replace('http://localhost:8000', 'https://ctmx.info');
 const dev = () => location.href = location.href.replace('https://ctmx.info', 'http://localhost:8000');
