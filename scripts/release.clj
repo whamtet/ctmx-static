@@ -14,6 +14,7 @@
 (copy-index "examples/click-to-edit.htm" "../ctmx_static.js")
 (copy-index "examples/bulk-update.htm" "../ctmx_static.js")
 (copy-index "examples/click-to-load.htm" "../ctmx_static.js")
+(copy-index "examples/delete-row.htm" "../ctmx_static.js")
 
 (require '[cljs.build.api :as b])
 
