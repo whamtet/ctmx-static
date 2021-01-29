@@ -19,20 +19,22 @@ const loadScript = (src, onload) => {
   document.head.appendChild(script);
 }
 
+var cljsSrc;
 const editors = [];
-const loadCljsTrue = (src) => {
-  loadScript(src, () => ctmx_static.eval.init(editors));
+
+const loadCljsHtmx = (onload) => {
+  loadScript(cljsSrc, () => {
+    ctmx_static.eval.init(false);
+    onload();
+  });
 };
 
-var cljsSrc;
 var hasFocussed = false;
 const editorFocus = () => {
   if (!hasFocussed) {
     hasFocussed = true;
     if (cljsSrc) {
-      loadCljsTrue(cljsSrc);
-    } else {
-      ctmx_static.eval.init(editors);
+      loadScript(cljsSrc, () => ctmx_static.eval.init(false));
     }
   }
 }
@@ -58,4 +60,4 @@ const edAppend = id => editors.push(editorialize(id));
 const prod = () => location.href = location.href.replace('http://localhost:8000', 'https://ctmx.info').replace('dist/', '');
 const dev = () => location.href = location.href.replace('https://ctmx.info', 'http://localhost:8000');
 
-const loadCljs = (src) => cljsSrc = src;
+const setSrc = (src) => cljsSrc = src;

@@ -15,10 +15,20 @@ htmx.defineExtension('static', {
   onEvent : function(name, evt) {
     if (name === 'htmx:beforeRequest') {
       const xhr = evt.detail.xhr;
-      xhr.send = xhr.onload;
       evt.detail.xhr = mockXhr;
       requestConfig = evt.detail.requestConfig;
-      logRequest();
+
+      const logLoad = () => {
+        logRequest();
+        xhr.onload();
+      };
+
+      if (!window.ctmx_static) {
+        loadCljsHtmx(logLoad);
+        xhr.send = () => null;
+      } else {
+        xhr.send = logLoad;
+      }
     }
     if (name === 'htmx:beforeSwap') {
       if (ctmx_static.rt.endpoint(requestConfig.path)) {

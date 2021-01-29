@@ -1,7 +1,7 @@
 (require '[ctmx-static.build :as build])
 
-(def s1 "<script src=\"/out/ctmx_static.js\"></script>")
-(def s2 "<script>loadCljs('%s')</script>")
+(def s1 "<script src=\"/out/ctmx_static.js\"></script>\n<script>onload = () => ctmx_static.eval.init(true);</script>")
+(def s2 "<script>setSrc('%s')</script>")
 
 (defn copy-index [from path]
   (spit (str "dist/" from)

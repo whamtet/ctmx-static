@@ -38,9 +38,11 @@
    :params {}
    :request-method :get})
 
+(def ^:dynamic *send-root* true)
 (defn send-root! [path f]
-  (let [id (.replace path "/" "")]
-    (-> id js/document.getElementById .-innerHTML (set! (-> init-request f hiccups/html)))
-    (-> id js/document.getElementById js/htmx.process)))
+  (when *send-root*
+    (let [id (.replace path "/" "")]
+      (-> id js/document.getElementById .-innerHTML (set! (-> init-request f hiccups/html)))
+      (-> id js/document.getElementById js/htmx.process))))
 
 (set! js/t #(prn @endpoints))
