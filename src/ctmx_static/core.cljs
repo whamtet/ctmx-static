@@ -4,6 +4,7 @@
     ctmx-static.rt
     ctmx-static.util
     cljs.pprint
+    clojure.string
     ;; for macroexpand
     [clojure.walk :as walk]
     ctmx.form
