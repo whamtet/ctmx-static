@@ -2,6 +2,7 @@
   (:require
     clojure.pprint
     [clojure.string :as string]
+    [clojure.data.json :as json]
     [ctmx.core :refer [defcomponent]]
     [hiccup.core :as hiccup]))
 
@@ -34,6 +35,8 @@
 (defn make-routes [route f]
   (swap! to-insert
          assoc (.replace route "/" "") (html f)))
+
+(def json json/write-str)
 
 (defn eval-all [s]
   (binding [*ns* (find-ns 'ctmx-static.build)]

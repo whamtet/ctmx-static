@@ -4,7 +4,20 @@
     <title>(/) ctmx - backend tools for htmx</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./click-to-edit_files/site.css">
-<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}                    </style></head>
+<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}
+  .htmx-settling tr.Inactive td {
+    background: lightcoral;
+  }
+  .htmx-settling tr.Active td {
+    background: darkseagreen;
+  }
+  tr td {
+    transition: all 1.2s;
+  }
+  .mmargin {
+    margin: 10px
+  }
+  </style></head>
 <body hx-ext="class-tools, preload, static">
 <div class="top-nav">
     <div class="c">
@@ -37,51 +50,75 @@
 
 <div class="c content">
 
-<h2>Click To Edit</h2>
-<p>The click to edit pattern provides a way to offer inline editing of all or part of a record without a page refresh.</p>
+<h2>Bulk Update</h2>
+<p>
+  This demo shows how to implement a common pattern where rows are selected and then bulk updated.
+  This is accomplished by putting a form around a table, with checkboxes in the table.
+</p>
 
-<pre id="editor1" class="language-html" style="height: 800px">
+<pre id="editor1" class="language-html" style="height: 970px">
 ;; this is normally on the backend
 
-(defn- input [type name value]
-  [:input {:type type :name name :value value}])
-(def text (partial input "text"))
-(def emaili (partial input "email"))
-(def hidden (partial input "hidden"))
+(def data
+  (atom
+    [{:name "Joe Smith" :email "joe@smith.org" :status "Inactive"}
+     {:name "Angie MacDowell" :email "angie@macdowell.org" :status "Inactive"}
+     {:name "Fuqua Tarkenton" :email "fuqua@tarkenton.org" :status "Inactive"}
+     {:name "Kim Yee"	:email "kim@yee.org"	:status "Inactive"}]))
 
-(defcomponent ^:endpoint form-ro [req first-name last-name email]
-  [:form {:id id :hx-target "this"}
-    (hidden "first-name" first-name)
-    [:div [:label "First Name"] ": " first-name]
-    (hidden "last-name" last-name)
-    [:div [:label "Last Name"] ": " last-name]
-    (hidden "email" email)
-    [:div [:label "Email"] ": " email]
-    [:button.btn.btn-primary
-     {:hx-put "form-edit"}
-      "Click To Edit"]])
+(defn- set-status [status data i]
+  (update data i assoc :status status))
 
-(defcomponent ^:endpoint form-edit [req first-name last-name email]
-  [:form {:id id :hx-put "form-ro" :hx-target "this"}
-    [:div
-      [:label "First Name"]
-      (text "first-name" first-name)]
-    [:div.form-group
-      [:label "Last Name"]
-      (text "last-name" last-name)]
-    [:div.form-group
-      [:label "Email Address"]
-      (emaili "email" email)]
-    [:button.btn "Save"]
-    [:button.btn {:hx-get "form-ro"} "Cancel"]])
+(defn tr [ids action i {:keys [name email status]}]
+  [:tr {:class (when (contains? ids i) action)}
+    [:td [:input {:type "checkbox" :name "ids" :value i :checked (contains? ids i)}]]
+    [:td name]
+    [:td email]
+    [:td status]])
 
-(make-routes "/edit-demo"
-  (fn [req]
-    (form-ro req "Joe" "Blow" "joe@blow.com")))
+(defcomponent ^:endpoint bulk-update [{:keys [request-method]} ^:ints ids status]
+  (when (= :put request-method)
+    (swap! data #(reduce (partial set-status status) % ids)))
+  [:form {:id id}
+    [:table
+      [:thead
+        [:tr
+          [:th]
+          [:th "Name"]
+          [:th "Email"]
+          [:th "Status"]]]
+      [:tbody (map-indexed (partial tr (set ids) status) @data)]]
+    [:a.btn.mmargin
+      {:hx-put "bulk-update"
+       :hx-vals (json {:status "Active"})
+       :hx-target (hash ".")}
+      "Activate"]
+    [:a.btn.mmargin
+      {:hx-put "bulk-update"
+       :hx-vals (json {:status "Inactive"})
+       :hx-target (hash ".")}
+      "Deactivate"]])
+
+(make-routes
+  "/demo"
+  (fn [req] (bulk-update req [] "")))
 </pre>
 
-<div id="edit-demo"></div>
-
+<div id="demo"></div>
+<p style="margin-top: 50px">
+  We use the <code>.htmx-settling</code> class to flash the rows when they change status
+</p>
+  <pre>
+  .htmx-settling tr.Inactive td {
+    background: lightcoral;
+  }
+  .htmx-settling tr.Active td {
+    background: darkseagreen;
+  }
+  tr td {
+    transition: all 1.2s;
+  }
+  </pre>
 </div>
 
 
@@ -93,7 +130,6 @@
 <script src="./click-to-edit_files/preload.js"></script>
 <script src="../common.js"></script>
 <script>
-htmx.config.defaultSettleDelay = 0;
 edAppend('editor1');
 </script>
 <script src="/out/ctmx_static.js"></script>

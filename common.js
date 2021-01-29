@@ -1,4 +1,3 @@
-htmx.config.defaultSettleDelay = 0;
 htmx.config.defaultSwapStyle = 'outerHTML';
 
 const delay = f => {
