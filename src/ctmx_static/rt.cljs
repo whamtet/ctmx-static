@@ -43,6 +43,8 @@
   (when *send-root*
     (let [id (.replace path "/" "")]
       (-> id js/document.getElementById .-innerHTML (set! (-> init-request f hiccups/html)))
-      (-> id js/document.getElementById js/htmx.process))))
+      (-> id js/document.getElementById js/htmx.process)
+      (when js/window._hyperscript
+        (-> id js/document.getElementById js/_hyperscript.processNode)))))
 
 (set! js/t #(prn @endpoints))

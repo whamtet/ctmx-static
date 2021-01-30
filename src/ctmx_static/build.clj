@@ -14,7 +14,8 @@
   (-> src
       rejoin
       (.replace "cljs.pprint" "clojure.pprint")
-      (.replace "cljs.user" "ctmx-static.build")))
+      (.replace "cljs.user" "ctmx-static.build")
+      (.replace ".includes" ".contains")))
 
 (defn get-source [i]
   (->> i

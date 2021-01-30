@@ -1,0 +1,127 @@
+
+<!-- saved from url=(0040)https://htmx.org/examples/click-to-edit/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>(/) ctmx - backend tools for htmx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./click-to-edit_files/site.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body hx-ext="class-tools, preload, static">
+<div class="top-nav">
+    <div class="c">
+        <div class="menu">
+            <div class="logo-wrapper">
+                <span onclick="location.href = '../'" class="logo light"><a>c</a>tmx</span>
+                <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
+                    <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="60" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                </svg>
+            </div>
+
+            <div id="nav" class="navigation nav"> <!-- don't boost on demo pages, sinon hijacks everything :/ -->
+
+                <div class="navigation-items" preload="mouseover">
+                    <div>
+                        <a href="/examples/index.htm">examples</a>
+                    </div>
+                </div>
+                <div class="github-stars">
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="c content">
+
+<h2>Modal Dialogs in Bootstrap</h2>
+<p>Many CSS toolkits include styles (and Javascript) for creating modal dialog boxes.
+This example shows how to use HTMX to display dynamic dialog using Bootstrap, and how to
+trigger its animation styles in Javascript.</p>
+<p>We start with a button that triggers the dialog, along with a DIV at the bottom of your
+markup where the dialog will be loaded:</p>
+<div id="demo"></div>
+<pre id="editor1" class="language-html" style="height: 620px">
+;; this is normally on the backend
+
+(defcomponent ^:endpoint modal [req]
+  (list
+    [:div#modal-backdrop.modal-backdrop.fade {:style "display:block"}]
+    [:div#modal.modal.fade {:tabindex -1 :style "display:block"}
+      [:div.modal-dialog.modal-dialog-centered
+        [:div.modal-content
+          [:div.modal-header
+            [:h5.modal-title "Modal title"]]
+          [:div.modal-body
+            [:p "Modal body text goes here."]]
+          [:div.modal-footer
+            [:button.btn.btn-secondary {:type "button" :onclick "closeModal()"}
+              "Close"]]]]]))
+
+(make-routes
+  "/demo"
+  (fn [req]
+    modal ;; need to include modal in list of endpoints
+    [:div
+      [:button.btn.btn-primary
+        {:hx-get "modal"
+         :hx-target "#modals-here"
+         :_ "on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"}
+        "Open Modal"]
+      [:div#modals-here]]))
+
+</pre>
+  <p>
+    The <code>Open Modal</code> button contains a <a href="https://hyperscript.org">hyperscript</a> snippet to handle css transitions.
+    We also use the following custom code to close the bootsrap.
+  </p>
+  <pre>
+function closeModal() {
+	var container = document.getElementById("modals-here")
+	var backdrop = document.getElementById("modal-backdrop")
+	var modal = document.getElementById("modal")
+
+	modal.classList.remove("show")
+	backdrop.classList.remove("show")
+
+	setTimeout(function() {
+		container.removeChild(backdrop)
+		container.removeChild(modal)
+	}, 200)
+}
+  </pre>
+  <script>
+  function closeModal() {
+	var container = document.getElementById("modals-here")
+	var backdrop = document.getElementById("modal-backdrop")
+	var modal = document.getElementById("modal")
+
+	modal.classList.remove("show")
+	backdrop.classList.remove("show")
+
+	setTimeout(function() {
+		container.removeChild(backdrop)
+		container.removeChild(modal)
+	}, 200)
+}
+  </script>
+</div>
+</body>
+<script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="../htmx.min.js"></script>
+<script src="../htmx-static.js"></script>
+<script src="./click-to-edit_files/class-tools.js"></script>
+<script src="./click-to-edit_files/preload.js"></script>
+<script src="../common.js"></script>
+<script src="https://unpkg.com/hyperscript.org"></script>
+<script>
+htmx.config.defaultSwapStyle = 'innerHTML';
+edAppend('editor1');
+</script>
+<script src="/out/ctmx_static.js"></script>
+<script>onload = () => ctmx_static.eval.init(true);</script>
+</html>

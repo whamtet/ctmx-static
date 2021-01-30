@@ -1,0 +1,94 @@
+
+<!-- saved from url=(0040)https://htmx.org/examples/click-to-edit/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>(/) ctmx - backend tools for htmx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./click-to-edit_files/site.css">
+<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}
+  .mr {margin-right: 10px}
+  </style></head>
+<body hx-ext="class-tools, preload, static">
+<div class="top-nav">
+    <div class="c">
+        <div class="menu">
+            <div class="logo-wrapper">
+                <span onclick="location.href = '../'" class="logo light"><a>c</a>tmx</span>
+                <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
+                    <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="60" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                </svg>
+            </div>
+
+            <div id="nav" class="navigation nav"> <!-- don't boost on demo pages, sinon hijacks everything :/ -->
+
+                <div class="navigation-items" preload="mouseover">
+                    <div>
+                        <a href="/examples/index.htm">examples</a>
+                    </div>
+                </div>
+                <div class="github-stars">
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="c content">
+
+<h2>Value Select</h2>
+<p>
+  In this example we show how to make the values in one <code>select</code> depend on the value selected in another <code>select</code>.
+</p>
+<div id="demo"></div>
+<pre id="editor1" class="language-html" style="height: 700px">
+;; this is normally on the backend
+
+(def data
+  {"Audi" ["A1" "A4" "A6"]
+   "Toyota" ["Landcruiser" "Hiace" "Corolla"]
+   "BMW" ["325i" "325ix" "X5"]})
+
+(defn- select [m value options]
+  [:select m
+    (for [option options]
+      [:option {:value option :selected (= value option)} option])])
+
+(defcomponent ^:endpoint models [req make]
+  (let [models (data make)]
+    [:div {:id id}
+      [:h3 "Pick a Make / Model"]
+      [:div
+        [:label.mr "Make"]
+        (select {:name "make"
+                 :hx-get "models"
+                 :hx-target (hash ".")} make (keys data))]
+      [:div
+        [:label.mr "Model"]
+        (select {} (first models) models)]]))
+
+(make-routes
+  "/demo"
+  (fn [req]
+    (models req "Audi")))
+
+</pre>
+</div>
+
+
+</body>
+<script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="../htmx.min.js"></script>
+<script src="../htmx-static.js"></script>
+<script src="./click-to-edit_files/class-tools.js"></script>
+<script src="./click-to-edit_files/preload.js"></script>
+<script src="../common.js"></script>
+<script>
+edAppend('editor1');
+</script>
+<script src="/out/ctmx_static.js"></script>
+<script>onload = () => ctmx_static.eval.init(true);</script>
+</html>

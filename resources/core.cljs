@@ -106,6 +106,3 @@
              expand-parser-hints
              (with-stack name args)
              (make-f name args)))))
-
-(defmacro make-routes [path f]
-  `(ctmx-static.rt/send-root! ~path ~f))
