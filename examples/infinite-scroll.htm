@@ -1,0 +1,87 @@
+
+<!-- saved from url=(0040)https://htmx.org/examples/click-to-edit/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>(/) ctmx - backend tools for htmx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./click-to-edit_files/site.css">
+<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}                    </style></head>
+<body hx-ext="class-tools, preload, static">
+<div class="top-nav">
+    <div class="c">
+        <div class="menu">
+            <div class="logo-wrapper">
+                <span onclick="location.href = '../'" class="logo light"><a>c</a>tmx</span>
+                <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
+                    <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="60" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                </svg>
+            </div>
+
+            <div id="nav" class="navigation nav"> <!-- don't boost on demo pages, sinon hijacks everything :/ -->
+
+                <div class="navigation-items" preload="mouseover">
+                    <div>
+                        <a href="/examples/index.htm">examples</a>
+                    </div>
+                </div>
+                <div class="github-stars">
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="c content">
+
+<h2>Infinite Scroll</h2>
+<p>The infinite scroll pattern provides a way to load content dynamically on user scrolling action.</p>
+
+<pre id="editor1" class="language-html" style="height: 550px">
+;; this is normally on the backend
+
+(def src "0123456789ABCDEF")
+(defn rand-str []
+  (clojure.string/join (repeatedly 15 #(rand-nth src))))
+
+(defn tr [i]
+    [:tr
+      (when (= 9 (mod i 10))
+        {:hx-get "rows" :hx-trigger "revealed" :hx-swap "afterend" :hx-vals (json {:page (inc i)})})
+      [:td "Agent Smith"]
+      [:td (str "void" i "@null.org")]
+      [:td (rand-str)]])
+
+(defcomponent ^:endpoint rows [req ^:int page]
+  (map tr (range page (+ 10 page))))
+
+(make-routes
+  "/demo"
+  (fn [req]
+    [:table
+      [:thead
+        [:tr [:th "Name"] [:th "Email"] [:th "ID"]]]
+      [:tbody (rows req 0)]]))
+
+</pre>
+<div id="demo"></div>
+
+</div>
+
+
+</body>
+<script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="../htmx.min.js"></script>
+<script src="../htmx-static.js"></script>
+<script src="./click-to-edit_files/class-tools.js"></script>
+<script src="./click-to-edit_files/preload.js"></script>
+<script src="../common.js"></script>
+<script>
+edAppend('editor1');
+</script>
+<script src="/out/ctmx_static.js"></script>
+<script>onload = () => ctmx_static.eval.init(true);</script>
+</html>

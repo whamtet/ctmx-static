@@ -49,6 +49,7 @@
   <p>
     The following examples do however use javascript.
     This enables you to experiment with 'backend code' without having to execute anything untrusted on the server.
+    In a real deployment the code runs on the backend and only the small (10kb gzipped) htmx library is needed.
   </p>
 <h2>introduction</h2>
   <div id="demo"></div>
@@ -171,8 +172,8 @@
 
   <p>
     Because htmx submits parameters as strings we can cast them as in the above example.<br>
-    Supported casts include <code>^:int</code>, <code>^:boolean</code>, <code>^:boolean-true</code> and <code>^:float</code>.
-    <code>^:boolean-true</code> defaults to true when nothing is set.
+    Supported casts include <code>^:int</code>, <code>^:boolean</code> and <code>^:float</code>.
+    See <a href="https://github.com/whamtet/ctmx#parameter-casting">documentation</a> for details.
   </p>
   <p>
     We may also cast within the body of <a>defcomponent</a>.

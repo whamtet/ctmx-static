@@ -12,7 +12,8 @@
 
 (copy-index "index.html" "ctmx_static.js")
 (doseq [f ["click-to-edit.htm" "bulk-update.htm" "click-to-load.htm" "delete-row.htm"
-           "inline-validation.htm"]]
+           "inline-validation.htm" "infinite-scroll.htm" "active-search.htm"
+           "progress-bar.htm"]]
   (copy-index (str "examples/" f) "../ctmx_static.js"))
 
 (require '[cljs.build.api :as b])

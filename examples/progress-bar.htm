@@ -1,0 +1,118 @@
+
+<!-- saved from url=(0040)https://htmx.org/examples/click-to-edit/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>(/) ctmx - backend tools for htmx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./click-to-edit_files/site.css">
+<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}
+.progress {
+    height: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+}
+.progress-bar {
+    float: left;
+    width: 0%;
+    height: 100%;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    background-color: #337ab7;
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+    -webkit-transition: width .6s ease;
+    -o-transition: width .6s ease;
+    transition: width .6s ease;
+}
+  </style></head>
+<body hx-ext="class-tools, preload, static">
+<div class="top-nav">
+    <div class="c">
+        <div class="menu">
+            <div class="logo-wrapper">
+                <span onclick="location.href = '../'" class="logo light"><a>c</a>tmx</span>
+                <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
+                    <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                    <rect y="60" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
+                </svg>
+            </div>
+
+            <div id="nav" class="navigation nav"> <!-- don't boost on demo pages, sinon hijacks everything :/ -->
+
+                <div class="navigation-items" preload="mouseover">
+                    <div>
+                        <a href="/examples/index.htm">examples</a>
+                    </div>
+                </div>
+                <div class="github-stars">
+                    <a href="https://github.com/whamtet/ctmx">github</a>
+                    <iframe style="margin:auto;" src="https://ghbtns.com/github-btn.html?user=whamtet&repo=ctmx&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="Star ctmx on GitHub"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="c content">
+
+<h2>Progress Bar</h2>
+<p>
+  This example shows how to implement a smoothly scrolling progress bar.
+</p>
+<p>
+  We start with an intial state with a button that issues a <code>POST</code> to <code>start</code> to begin the job:
+</p>
+
+<pre id="editor1" class="language-html" style="height: 600px">
+;; this is normally on the backend
+
+(defn- progress [width]
+  [:div.progress
+    [:div#pb.progress-bar {:style (str "width:" width "%")}]])
+
+(defcomponent ^:endpoint start [req ^:float width]
+  (let [width (if width (-> width (+ (rand 30)) (min 100)) 0)]
+    (if (= width 100)
+      [:div {:hx-target "this"}
+        [:h3 "Complete"]
+        (progress 100)
+        [:button.btn {:hx-post "start"} "Restart"]]
+      [:div {:hx-target "this"
+             :hx-get "start"
+             :hx-trigger "load delay:600ms"
+             :hx-vals (json {:width width})}
+        [:h3 "Running"]
+        (progress width)])))
+
+(make-routes
+  "/demo"
+  (fn [req]
+    [:div {:style "height: 200px"}
+      [:div {:hx-target "this"}
+        [:h3 "Start Progress"]
+        [:button.btn {:hx-post "start"} "Start Job"]]]))
+
+</pre>
+<div id="demo"></div>
+</div>
+
+
+</body>
+<script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="../htmx.min.js"></script>
+<script src="../htmx-static.js"></script>
+<script src="./click-to-edit_files/class-tools.js"></script>
+<script src="./click-to-edit_files/preload.js"></script>
+<script src="../common.js"></script>
+<script>
+edAppend('editor1');
+</script>
+<script src="/out/ctmx_static.js"></script>
+<script>onload = () => ctmx_static.eval.init(true);</script>
+</html>
