@@ -11,10 +11,9 @@
             (.replace s1 (format s2 path)))))
 
 (copy-index "index.html" "ctmx_static.js")
-(copy-index "examples/click-to-edit.htm" "../ctmx_static.js")
-(copy-index "examples/bulk-update.htm" "../ctmx_static.js")
-(copy-index "examples/click-to-load.htm" "../ctmx_static.js")
-(copy-index "examples/delete-row.htm" "../ctmx_static.js")
+(doseq [f ["click-to-edit.htm" "bulk-update.htm" "click-to-load.htm" "delete-row.htm"
+           "inline-validation.htm"]]
+  (copy-index (str "examples/" f) "../ctmx_static.js"))
 
 (require '[cljs.build.api :as b])
 
