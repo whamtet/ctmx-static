@@ -4,20 +4,7 @@
     <title>(/) ctmx - backend tools for htmx</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./click-to-edit_files/site.css">
-<style>                      .htmx-indicator{opacity:0;transition: opacity 200ms ease-in;}                      .htmx-request .htmx-indicator{opacity:1}                      .htmx-request.htmx-indicator{opacity:1}
-  .error-message {
-    color:red;
-  }
-  .error input {
-      box-shadow: 0 0 3px #CC0000;
-   }
-  .valid input {
-      box-shadow: 0 0 3px #36cc00;
-   }
-  .mr {
-      margin-right: 10px;
-  }
-  </style></head>
+</head>
 <body hx-ext="class-tools, preload, static">
 <div class="top-nav">
     <div class="c">
@@ -50,56 +37,42 @@
 
 <div class="c content">
 
-<h2>Inline Validation</h2>
+<h2>Sortable</h2>
+<p>In this example we show how to integrate the <a href="https://sortablejs.github.io/Sortable/">Sortable</a>
+javascript library with htmx.</p>
+<p>To begin we intialize the <code>Sortable</code> javascript library:</p>
+<pre>
+  const sortable = htmx.find('#sortable');
+  new Sortable(sortable, {animation: 150, ghostClass: 'blue-background-class'});
+</pre>
 <p>
-  This example shows how to do inline field validation, in this case of an email address.
+  We then trigger <code>POST</code> to <code>sortable</code> on the <code>end</code> event to persist changes (if necessary).
 </p>
-
-<pre id="editor1" class="language-html" style="height: 550px">
+<div id="demo"></div>
+<pre id="editor1" class="language-html" style="height: 450px">
 ;; this is normally on the backend
 
-(defcomponent ^:endpoint email [req email]
-  [:div {:hx-target "this" :hx-swap "outerHTML"}
-    [:label.mr "Email Address"]
-    [:input {:name "email" :value email :hx-get "email" :hx-indicator "#ind"}]
-    [:img#ind.htmx-indicator {:src "img/bars.svg"}]
-    (when-not (contains? #{"" "test@test.com"} email)
-      [:div.error-message "That email is already taken.  Please enter another email."])])
+(defn- content [items]
+  (list*
+    [:div.htmx-indicator "Updating..."]
+    (for [item items]
+      [:div
+        [:input {:type "hidden" :name "order" :value item}]
+        "Item " item])))
 
-(defn- input-group [label name]
-  [:div.form-group
-    [:label.mr label]
-    [:input.form-control {:type text :name name}]])
+(defcomponent ^:endpoint sortable [req ^:ints order]
+  (if (not-empty order)
+    (content order)
+    [:form#sortable {:hx-post "sortable" :hx-trigger "end"}
+      (content (range 1 6))]))
 
 (make-routes
   "/demo"
   (fn [req]
-    [:div
-      [:h3 "Signup Form"]
-      [:form
-        (email req "")
-        (input-group "First Name" "first-name")
-        (input-group "Last Name" "last-name")]]))
+    (sortable req nil)))
 
 </pre>
-
-<div id="demo"></div>
-<p style="margin-top: 50px">
-  This form can be lightly styled with this CSS:
-</p>
-  <pre>
-  .error-message {
-    color:red;
-  }
-  .error input {
-    box-shadow: 0 0 3px #CC0000;
-  }
-  .valid input {
-    box-shadow: 0 0 3px #36cc00;
-  }
-  </pre>
 </div>
-
 
 </body>
 <script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -108,9 +81,21 @@
 <script src="./click-to-edit_files/class-tools.js"></script>
 <script src="./click-to-edit_files/preload.js"></script>
 <script src="../common.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
+htmx.config.defaultSwapStyle = 'innerHTML';
 edAppend('editor1');
 </script>
 <script src="/out/ctmx_static.js"></script>
 <script>onload = () => ctmx_static.eval.init(true);</script>
+<script>
+  const oldLoad = onload;
+  onload = () => {
+    if (oldLoad) {
+      oldLoad();
+    }
+    const content = htmx.find('#sortable');
+    new Sortable(content, {animation: 150, ghostClass: 'blue-background-class'});
+  }
+</script>
 </html>
