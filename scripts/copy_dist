@@ -8,3 +8,5 @@ cp -r src-min-noconflict dist
 cp -r examples dist
 cp common.js dist
 cp site.css dist
+cp CV_Matthew_Molloy.pdf dist
+cp about.html dist

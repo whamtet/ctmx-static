@@ -1,18 +1,14 @@
-
-<!-- saved from url=(0040)https://htmx.org/examples/click-to-edit/ -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>(/) ctmx - backend tools for htmx</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/site.css">
-<style>
-  .mb {margin-bottom: 10px}
-  </style></head>
-<body hx-ext="class-tools, preload, static">
+  </head>
+<body hx-ext="class-tools, preload, static" class="">
 <div class="top-nav">
     <div class="c">
         <div class="menu">
             <div class="logo-wrapper">
-                <span onclick="location.href = '../'" class="logo light"><a>c</a>tmx</span>
+                <span onclick="document.location = '.'" class="logo light"><a>c</a>tmx</span>
                 <svg onclick="document.getElementById(&#39;nav&#39;).classList.toggle(&#39;show&#39;)" class="hamburger" viewBox="0 0 100 80" width="25" height="25" style="margin-bottom:-5px">
                     <rect width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
                     <rect y="30" width="100" height="20" style="fill:rgb(52, 101, 164)" rx="10"></rect>
@@ -20,14 +16,14 @@
                 </svg>
             </div>
 
-            <div id="nav" class="navigation nav"> <!-- don't boost on demo pages, sinon hijacks everything :/ -->
+            <div id="nav" class="navigation">
 
                 <div class="navigation-items" preload="mouseover">
-                    <div>
-                        <a href="index.htm">examples</a>
+                  <div>
+                        <a href="/examples/index.htm">examples</a>
                     </div>
                   <div>
-                    <a href="../about.html">about</a>
+                    <a href="about.html">about</a>
                   </div>
                 </div>
                 <div class="github-stars">
@@ -41,43 +37,31 @@
 
 
 <div class="c content">
-
-<h2>Dialogs</h2>
-<p>Dialogs can be triggered with the <a href="https://htmx.org/attributes/hx-prompt"><code>hx-prompt</code></a> and
-  <a href="https://htmx.org/attributes/hx-confirm"><code>hx-confirm</code></a> attributes.
-  These are triggered by the user interaction that would trigger the AJAX request,
-  but the request is only sent if the dialog is accepted.
-</p>
-<div id="demo"></div>
-<pre id="editor1" class="language-html" style="height: 400px">
-;; this is normally on the backend
-
-(defcomponent ^:endpoint reply [{:keys [headers]}]
-  [:div#response "You entered " (headers "hx-prompt")])
-
-(make-routes
-  "/demo"
-  (fn [req]
-    [:div
-      [:button.btn.mb
-        {:hx-post "reply"
-         :hx-prompt "Enter a string"
-         :hx-confirm "Are you sure?"
-         :hx-target "#response"}
-        "Prompt Submission"]
-      [:div#response]]))
-
-</pre>
+<h1>
+  About
+</h1>
+  <p>
+    <a>c</a>tmx is the work of Matthew Molloy.  He has 10 years development experience and numerous open source contributions.
+  </p>
+  <p>
+    <a href="CV_Matthew_Molloy.pdf">CV</a>
+  </p>
+  <p>
+    <a href="https://github.com/whamtet" target="_blank">Github</a>
+  </p>
+  <p>
+    <a href="https://www.linkedin.com/in/matthew-molloy-1857884b/" target="_blank">Linkedin</a>
+  </p>
 </div>
-
-
 </body>
-<script src="../src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script src="../htmx.min.js"></script>
-<script src="../htmx-static.js"></script>
-<script src="../common.js"></script>
+<script src="src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="htmx.min.js"></script>
+<script src="htmx-static.js"></script>
+<script src="common.js"></script>
 <script>
-edAppend('editor1');
+  htmx.config.defaultSettleDelay = 0;
+  editorialize('boolean-body');
+  [1, 2, 3, 4, 5].forEach(i => edAppend('editor' + i));
 </script>
 <script src="/out/ctmx_static.js"></script>
 <script>onload = () => ctmx_static.eval.init(true);</script>
